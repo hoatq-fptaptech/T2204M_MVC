@@ -1,5 +1,5 @@
 <?php
-
+include_once("models/Student.php");
 class StudentController
 {
     public function action(){
@@ -13,14 +13,30 @@ class StudentController
     }
 
     public function get(){
-        echo "list student";
+        $st = new Student();
+        $data = $st->get();
+        include("views/liststudent.php");
     }
 
     public function create(){
-
+        include("views/createstudent.php");
     }
 
     public function save(){
-
+        $name = $_POST["name"];
+        $email = $_POST["email"];
+        $mark = $_POST["mark"];
+        $gender = $_POST["gender"];
+        $sv = new Student();
+        $sv->name = $name;
+        $sv->email = $email;
+        $sv->mark = $mark;
+        $sv->gender = $gender;
+        $rs = $sv->create();
+        if($rs){
+            header("Location: ?module=student");
+            return;
+        }
+        header("Location: ?module=student&action=create");
     }
 }
